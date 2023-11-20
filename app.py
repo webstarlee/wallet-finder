@@ -37,11 +37,7 @@ def generateAddress(entropy):
 def main(r):
     z = 1
     w = 0
-    # web3Instance = connect()
-    filename = "addresses.txt"
-    with open(filename) as f:
-        add = f.read().split()
-    add = set(add)
+    web3Instance = connect()
     while True:
         MNEMONIC: str = generate_mnemonic(language="english", strength=128)
         PASSPHRASE: Optional[str] = None
@@ -65,7 +61,8 @@ def main(r):
                 
             sys.stdout.flush()
             z += 8
-            if addr in add:
+            transtion_count = web3Instance.eth.get_transaction_count(addr)
+            if transtion_count > 0:
                 print('Winning', Fore.GREEN, str(w), Fore.WHITE, str(z), Fore.YELLOW, 'Total Scan Checking ----- ETH Address =', Fore.GREEN, str(addr), end='\r')
                 w += 1
                 f = open("Results.txt", "a")
